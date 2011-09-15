@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <software>
     <metadata>
-        <name>eZBluePrints Action</name>
+        <name>eZBluePrints Workflow Event</name>
         <version>0.0.1-dev</version>
         <copyright>eZBluePrints Team</copyright>
         <license>GNU General Public License v2</license>
