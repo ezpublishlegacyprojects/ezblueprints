@@ -1,3 +1,57 @@
-TODO
-Comment
-Create README
+INSTALL
+-------
+
+In administrator user interface, click 'setup' tab->'extensions' menu, select 'ezblueprintsaction', click button 'Apply Changes', click button 'Regenerate autoload arrays for extensions'. Clear the cache.
+
+Finally you need to edit one template somewhere and create a form with one field named 'hello', as our extension check if the submited form has one variable named 'hello' and one variable named 'ContentObjectID':
+
+<form action={"content/action"|ezurl} method="post">
+<input name="ContentObjectID" type="hidden" value="-1" />
+<input name="hello" type="submit" value="Hello Action!" />
+ 
+</form>
+
+Then when you submit the form, the php code of our extension will be called some time, and we will check if the submited form to the content/action view has some variables and do something.
+
+
+ABOUT THIS EXTENSION
+--------------------
+
+This extension shows how to create the minimum content action extension.
+
+The 'content/action' view is commonly used to process forms - while eZ Publish does a lot of validation, you may want to customise this.
+
+Let's analise our folder structure inside this extension folder first:
+
+    ezblueprintsaction
+        settings
+        actions
+
+settings/content.ini.append.php file defines that this is a content action extension:
+
+<?php /* #?ini charset="utf-8"?
+ *
+[ActionSettings]
+ExtensionDirectories[]=ezblueprintsaction
+ 
+ */
+?>
+
+actions/content_actionhandler.php file is the php action handler for this extension,
+you define here what eZ will do when some form is submitted with certain variables:
+
+<?php
+ 
+function ezblueprintsaction_ContentActionHandler(&$module, &$http,
+        &$objectID ) {
+ 
+    if ($http->hasPostVariable("hello" ) ) {
+        echo $http->postVariable("hello");
+        eZExecution::cleanExit();
+ 
+    }
+    return;
+}
+?>
+ 
+Please note that you need to check your extension priority 'cause sometimes another extension can redirect the user before eZ execute this extension action.
