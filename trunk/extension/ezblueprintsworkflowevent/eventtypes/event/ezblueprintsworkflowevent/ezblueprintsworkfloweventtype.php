@@ -2,11 +2,14 @@
 
 class eZBluePrintsWorkflowEventType extends eZWorkflowEventType
 {
-
+    // this constant has got to be the same as found in workflow.ini
     const WORKFLOW_TYPE_STRING = "ezblueprintsworkflowevent";
 
     function eZBluePrintsWorkflowEventType()
     {
+        // The constructor registers the name of the event visible to the admin user. It should be
+        // made multilingual via a call to eztr::i18n, and this extension should
+        // be made into an extension providing translations too
         $this->eZWorkflowEventType( eZBluePrintsWorkflowEventType::WORKFLOW_TYPE_STRING, "eZBluePrintsWorkflowEvent" );
 
         // define here the triggers to which this event can be applied
@@ -35,6 +38,7 @@ class eZBluePrintsWorkflowEventType extends eZWorkflowEventType
 
 }
 
+// we need to register the name of the php class that implements this event type
 eZWorkflowEventType::registerEventType( eZBluePrintsWorkflowEventType::WORKFLOW_TYPE_STRING, "eZBluePrintsWorkflowEventType" );
 
 ?>
