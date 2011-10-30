@@ -1,59 +1,54 @@
-INSTALL
--------
-
-In administrator user interface, click 'setup' tab->'extensions' menu, select 'ezblueprintsworkflowevent', click button 'Apply Changes', click button 'Regenerate autoload arrays for extensions'. Clear the cache.
-
-Create the eZBluePrintsWorkflowEvent workflow: 'Workflows'->'Standard'->'New workflow'->'ezblueprintsworkflowevent' ( name ezblueprintsworkflowevent ).
-Setup eZBluePrintsWorkflowEvent trigger: 'Triggers'-> 'content-publish-after' ( choose eZBluePrintsWorkflowEvent ). Apply changes.
-Go to "Content", edit and publish some content object, you will see the "Hello Event".
-
-
 ABOUT THIS EXTENSION
 --------------------
 
-This extension shows how to create and setup the minimum workflow event extension.
+This extension shows how to create and setup a minimal workflow event type.
 
-First let's analise the following structure inside the extension folder:
+Workflows are ordered groups of tasks, called events, executed automatically by
+eZ Publish when the editor takes some action such eg. as publishing content.
 
-    ezblueprintsworkflowevent
+The actions to which workflows can be hooked are called triggers.
+
+Every event that is part of a workflow is defined in terms of a workflow type.
+Event types provided by the system are "wait until a given date" and "wait for
+approval". Custom event types allow the developer to add his own functionality.
+
+
+INSTALL
+-------
+
+1. Unzip the extension in the "extension" folder of eZ Publish, then activate it via the Administration Interface.
+
+2. Crate a new workflow: 'Workflows'->'Standard'->'New workflow'->'ezblueprintsworkflow'
+   Add a new event of type eZBluePrintsWorkflowEvent to the workflow, then save it
+   Setup the new workflow on the post-publication trigger: 'Triggers'-> 'content-publish-after' ( choose eZBluePrintsWorkflowEvent ). Apply changes.
+
+3. Go to "Content", edit and publish some content object, you will see the "Hello Event" in your debug log.
+
+
+TUTORIAL
+--------
+
+To create a workflow event type called <XXX>, the following files are needed:
+
+    <extensionname>
         settings
+		    workflow.ini.append.php
         eventtypes
             event
-                ezblueprintsworkflowevent
+                <XXX>
+                    <XXX>type.php
 
-Then we define all the events this extension has by creating the settings/workflow.ini.append.php file:
+The event type has to be registered in workflow.ini.append.php:
 
-<?php
-/*
+<?php /*
  
 [EventSettings]
-ExtensionDirectories[]=ezblueprintsworkflowevent
-AvailableEventTypes[]=event_ezblueprintsworkflowevent
- 
-*/
-?>
+ExtensionDirectories[]=<extensionname>
+AvailableEventTypes[]=event_<XXX>
 
-Finally the eventtypes/event/ezblueprintsworkflowevent/ezblueprintsworkfloweventtype.php file.
+*/ ?>
 
-<?php
- 
-class eZBluePrintsWorkflowEventType extends eZWorkflowEventType {
-    const WORKFLOW_TYPE_STRING = "ezblueprintsworkflowevent";
- 
-    function eZBluePrintsWorkflowEventType() {
-        $this->eZWorkflowEventType(eZBluePrintsWorkflowEventType::WORKFLOW_TYPE_STRING, "eZBluePrintsWorkflowEvent");
-        /* define trigger here */
-        $this->setTriggerTypes(array('content' => array('publish' => array('after'))));
-    }
- 
-    function execute($process, $event) {
-        /* code goes here */
-        echo "Hello Event";
-        eZExecution::cleanExit();
-        //return eZWorkflowType::STATUS_ACCEPTED;
-    }
- 
-}
- 
-eZWorkflowEventType::registerEventType(eZBluePrintsWorkflowEventType::WORKFLOW_TYPE_STRING, "eZBluePrintsWorkflowEventType");
+A php class named <XXX>Type has to be declared in eventtypes/event/<XXX><XXX>type.php.
+It has to be a subclass of eZWorkflowEventType.
+
 ?>
