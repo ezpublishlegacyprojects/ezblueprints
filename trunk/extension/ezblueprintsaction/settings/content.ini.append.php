@@ -1,7 +1,6 @@
-<?php /* #?ini charset="utf-8"?
- *
+<?php /*
+
 [ActionSettings]
 ExtensionDirectories[]=ezblueprintsaction
- 
- */
-?>
+
+*/ ?>
