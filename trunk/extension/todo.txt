@@ -1,0 +1,9 @@
+. should rename ezblueprintsworkflowevent in ezblueprintsworkfloweventtype
+
+. should add to ezblueprintsworkflowevent the templates needed to avoid warnings when editing it in backoffice
+
+. review ezblueprintsaction extension
+
+. add an introduction text at the top level
+
+. decide a common format for READMEs and other things such as comments
